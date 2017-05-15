@@ -13,7 +13,7 @@ from lxml import html
 BASE_URL = 'https://secure.pt-dlr.de/ptoutline/'
 
 # FIXME: Hardcoded id value for form
-FORM_ID = 2015
+FORM_ID = 2016
 
 FORM_FIELDS = (
     ('wie_innovativ_ist_die_einge$00[]', -1),
