@@ -12,9 +12,6 @@ from lxml import html
 
 BASE_URL = 'https://secure.pt-dlr.de/ptoutline/'
 
-# FIXME: Hardcoded id value for form
-FORM_ID = 2015
-
 FORM_FIELDS = (
     ('wie_innovativ_ist_die_einge$00[]', -1),
     ('kommentar$00', ''),
@@ -131,14 +128,43 @@ def load_post_data(survey_path, project_id):
     return post_data
 
 
+def get_form_id(session, meta):
+    data = get_csrf(session)
+    data.update({
+        'round_id': meta['round_id'],
+        'expert_assignment_id': meta['expert_assignment_id'],
+        'round_group_id': meta['round_group_id']
+    })
+    url = BASE_URL + 'expert/surveys/get/%s' % meta['round_id']
+    response = session.post(url, data=data, headers={
+        'X-Requested-With': 'XMLHttpRequest'
+    })
+    doc = html.fromstring(response.content)
+    return doc.xpath('.//input[@name="form_id"]/@value')[0]
+
+
+def get_meta_from_url(url):
+    # e.g. PROTOTYPEFUND2-001/239/86447/508/Jury
+    # round_id:239
+    # expertassignment_id:86447
+    # round_group_id:508
+    parts = url.split('/')
+    return {
+        'round_id': parts[-4],
+        'expert_assignment_id': parts[-3],
+        'round_group_id': parts[-2],
+    }
+
+
 def save_project(session, row, survey_id, finalise=False):
     survey_path = get_survey_path(survey_id)
 
-    project_id = get_project_id(row)
-
-    # e.g.: #PROTOTYPEFUND-003/131/51983/294/Pre-Jury'
     link = row.xpath('./td[1]/a/@href')[0]
-    linkno = link.split('/')[-3]
+    meta = get_meta_from_url(link)
+
+    form_id = get_form_id(session, meta)
+
+    project_id = get_project_id(row)
 
     try:
         post_data = load_post_data(survey_path, project_id)
@@ -146,17 +172,17 @@ def save_project(session, row, survey_id, finalise=False):
         print(e)
         return False
 
-    print('Saving', project_id, 'with', linkno, '...')
+    print('Saving', project_id, 'with', meta['expert_assignment_id'], '...')
     data = get_csrf(session)
     data.update(post_data)
     data.update({
         'round_id': survey_id,
-        'expert_assignment_id': linkno,
-        'form_id': FORM_ID
+        'expert_assignment_id': meta['expert_assignment_id'],
+        'form_id': form_id
     })
     if not finalise:
         url = BASE_URL + 'expert/surveys/save/%s/%s/%s' % (survey_id,
-                                                           linkno, FORM_ID)
+                                       meta['expert_assignment_id'], form_id)
         response = session.post(url, data=data, headers={
             'X-Requested-With': 'XMLHttpRequest'
         })
