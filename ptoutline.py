@@ -35,13 +35,13 @@ def get_csrf(s):
 
 
 def login(s, username, password):
-    s.get(BASE_URL + 'expert/users/login')
+    s.get(BASE_URL + 'expert/prototypefund3')
     d = get_csrf(s)
     d.update({
         'email': username,
         'password': password
     })
-    response = s.post(BASE_URL + 'expert/users/login', data=d)
+    response = s.post(BASE_URL + 'expert/users/login/prototypefund3', data=d)
     if 'Logout' not in response.text:
         raise Exception('Login failed')
 
@@ -61,7 +61,10 @@ def get_project_filepath(survey_path, project_id, ext='yml'):
 
 
 def get_project_id(row):
-    return row.xpath('./td[1]/a')[0].text_content().strip().split('-')[1]
+    project_id = row.xpath('./td[1]/a')[0].text_content().strip()
+    if '-' in project_id:
+        project_id = project_id.split('-')[1]
+    return project_id
 
 
 def get_project_rows(session, survey_id):
