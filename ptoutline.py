@@ -120,7 +120,7 @@ def load_post_data(survey_path, project_id):
                  if k not in ('title', 'name')}
     for k, v in post_data.items():
 
-        if k.endswith('$00[]') and v not in ('0', '5', '10', '15'):
+        if k.endswith('$00[]') and v not in ('0', '5', '10', '20'):
             raise ValueError('Project %s has bad value %s at %s' % (
                 project_id, v, k))
     if not post_data['welchen_fachlichen_ratschla$05']:
