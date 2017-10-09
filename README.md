@@ -12,7 +12,9 @@ Needs python3.
 
 
     pip3 install -r requirements.txt
-
+    # or alternatively using pipenv
+    pipenv --three
+    pipenv install
 
 
 ## Usage
