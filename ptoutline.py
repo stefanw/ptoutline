@@ -135,7 +135,7 @@ def get_form_id(session, meta):
     data = get_csrf(session)
     data.update({
         'round_id': meta['round_id'],
-        'expert_assignment_id': meta['expert_assignment_id'],
+        'expertassignment_id': meta['expert_assignment_id'],
         'round_group_id': meta['round_group_id']
     })
     url = BASE_URL + 'expert/surveys/get/%s' % meta['round_id']
