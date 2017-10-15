@@ -194,7 +194,7 @@ def save_project(session, row, survey_id, finalise=False):
         response = session.post(url, data=data, headers={
             'X-Requested-With': 'XMLHttpRequest'
         })
-    if response.status_code == 200:
+    if response.status_code == 200 and len(response.content) > 0:
         print('Saved')
         return True
     print('Save of %s failed!' % project_id)
