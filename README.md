@@ -19,7 +19,7 @@ Needs python3.
 
 ## Usage
 
-1. Find your Survey round number in the URL: <https://secure.pt-dlr.de/ptoutline/expert/surveys/index/279>
+1. Find your Survey round number in the URL: <https://ptoutline.eu/expert/surveys/index/279>
 2. Run `python3 ptoutline.py download 279 <your-email>` and enter your password.
 3. Find project PDFs and YAML files in a directory called `round_279`
 4. Fill out all the YAML files. Ratings can be one of 0, 5, 10, 20 (higher is better).
