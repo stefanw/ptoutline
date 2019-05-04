@@ -11,6 +11,7 @@ from lxml import html
 
 
 BASE_URL = 'https://secure.pt-dlr.de/ptoutline/'
+BASE_URL = 'https://ptoutline.eu/'
 
 FORM_FIELDS = (
     ('wie_innovativ_ist_die_einge$00[]', -1),
