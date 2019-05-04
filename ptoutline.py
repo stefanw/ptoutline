@@ -35,13 +35,14 @@ def get_csrf(s):
 
 
 def login(s, username, password):
-    s.get(BASE_URL + 'expert/prototypefund3')
+    s.get('{}expert/users/login/'.format(BASE_URL))
     d = get_csrf(s)
     d.update({
         'email': username,
         'password': password
     })
-    response = s.post(BASE_URL + 'expert/users/login/prototypefund3', data=d)
+    url = '{}expert/users/login/'.format(BASE_URL)
+    response = s.post(url, data=d)
     if 'Logout' not in response.text:
         raise Exception('Login failed')
 
@@ -184,8 +185,11 @@ def save_project(session, row, survey_id, finalise=False):
         'form_id': form_id
     })
     if not finalise:
-        url = BASE_URL + 'expert/surveys/save/%s/%s/%s' % (survey_id,
-                                       meta['expert_assignment_id'], form_id)
+        url = BASE_URL + 'expert/surveys/save/%s/%s/%s' % (
+            survey_id,
+            meta['expert_assignment_id'],
+            form_id
+        )
         response = session.post(url, data=data, headers={
             'X-Requested-With': 'XMLHttpRequest'
         })
