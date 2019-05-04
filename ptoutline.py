@@ -30,8 +30,7 @@ FORM_FIELDS = (
 
 def get_csrf(s):
     return {
-        'csrf_test_name': s.cookies.get('csrf_live_appsites2'),
-        'csrf_token_hash': s.cookies.get('csrf_live_appsites2')
+        'csrf_test_name': s.cookies.get('csrf_main_ptoutline')
     }
 
 
